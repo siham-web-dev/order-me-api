@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package identity;
+
+message User {
+    string id = 1;
+    string email = 2;
+    string phone = 4;
+    string createdAt = 5;
+    Profile profile = 6;
+}
+
+message Profile {
+    string id = 1;
+    string userId = 2;
+    string fullName = 7;
+    string bio = 3;
+    string avatarUrl = 4;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+message VerifyTokenResponse {
+  bool isValid = 1;
+  User user = 2;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+    User user = 2;
+}
+
+message CreateUserRequest {
+    string email = 1;
+    string fullName = 2;
+    string phone = 3;
+    string password = 4;
+}
+
+message CreateUserResponse {
+    User user = 1;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+
+message Empty {}
+
+message ListUsersResponse {
+    repeated User users = 1;
+}
+
+service IdentityService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+    rpc UpdateUserProfile(Profile) returns (User);
+    rpc DeleteUser(GetUserRequest) returns (User);
+    rpc ListUsers(Empty) returns (ListUsersResponse);
+    rpc GetUserProfile(GetUserRequest) returns (Profile);
+    rpc loginUser(LoginRequest) returns (LoginResponse);
+    rpc VerifyToken(VerifyTokenRequest)  returns (VerifyTokenResponse);
+}
